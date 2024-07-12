@@ -24,7 +24,7 @@ func generateSecureKey() string {
 }
 
 func main() {
-	url := "host=localhost user=parrot password=parrot123 dbname=parrot port=5432 sslmode=disable"
+	url := "host=localhost user=user password=somepassword dbname=some_database port=5432 sslmode=disable"
 
 	secretKey := generateSecureKey()
 	kk := keyloader.KeyConfig{

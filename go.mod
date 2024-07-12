@@ -1,6 +1,6 @@
-module labs.zikani.me/gormjsonenc
+module store-encrypted-json-go-struct-tutorial
 
-go 1.21.5
+go 1.22
 
 require (
 	github.com/jackc/pgx/v5 v5.4.3
