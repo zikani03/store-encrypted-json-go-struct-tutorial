@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql/driver"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -29,16 +28,16 @@ func (settings *SettingsData) Scan(value interface{}) error {
 
 	data, err := base64.StdEncoding.DecodeString(stored)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to decode base64 %v", err)
 	}
 
 	k, err := keyloader.LoadSingleKey()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to load key %v", err)
 	}
 	decryptedData, err := k.Decrypt(data)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to decrypt %v", err)
 	}
 	result := SettingsData{}
 	err = json.Unmarshal(decryptedData, &result)
@@ -46,20 +45,20 @@ func (settings *SettingsData) Scan(value interface{}) error {
 	return err
 }
 
-func (settings *SettingsData) Value() (driver.Value, error) {
+func (settings *SettingsData) Value() (string, error) {
 	data, err := json.Marshal(settings)
 	if err != nil {
-		return nil, fmt.Errorf("failed to marshal data %v", err)
+		return "", fmt.Errorf("failed to marshal data %v", err)
 	}
 
 	k, err := keyloader.LoadSingleKey()
 	if err != nil {
-		return nil, fmt.Errorf("failed to marshal data %v", err)
+		return "", fmt.Errorf("failed to marshal data %v", err)
 	}
 
 	encrypted, err := k.Encrypt(data)
 	if err != nil {
-		return nil, fmt.Errorf("failed to marshal data %v", err)
+		return "", fmt.Errorf("failed to marshal data %v", err)
 	}
 
 	return base64.StdEncoding.EncodeToString(encrypted), nil

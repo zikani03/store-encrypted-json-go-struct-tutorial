@@ -46,5 +46,5 @@ func main() {
 	fmt.Printf("Secret Key: %s\n", secretKey)
 	HowToEncrypt()
 	EncryptUsingGorm(url)
-	EncryptUsingGorm(url)
+	EncryptUsingPgx(url)
 }
